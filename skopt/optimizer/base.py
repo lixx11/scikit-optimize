@@ -10,6 +10,7 @@ import numbers
 from collections import Iterable
 
 import numpy as np
+from tqdm import tqdm
 
 from ..callbacks import check_callback
 from ..callbacks import VerboseCallback
@@ -18,7 +19,7 @@ from ..utils import eval_callbacks
 
 
 def base_minimize(func, dimensions, base_estimator,
-                  n_calls=100, n_random_starts=10,
+                  args=(), n_calls=100, n_random_starts=10,
                   acq_func="EI", acq_optimizer="lbfgs",
                   x0=None, y0=None, random_state=None, verbose=False,
                   callback=None, n_points=10000, n_restarts_optimizer=5,
@@ -252,9 +253,9 @@ def base_minimize(func, dimensions, base_estimator,
             return result
 
     # Optimize
-    for n in range(n_calls):
+    for n in tqdm(range(n_calls)):
         next_x = optimizer.ask()
-        next_y = func(next_x)
+        next_y = func(next_x, *args)
         result = optimizer.tell(next_x, next_y)
         result.specs = specs
         if eval_callbacks(callbacks, result):

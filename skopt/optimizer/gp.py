@@ -9,7 +9,7 @@ from ..utils import cook_estimator
 from ..utils import normalize_dimensions
 
 
-def gp_minimize(func, dimensions, base_estimator=None,
+def gp_minimize(func, dimensions, base_estimator=None, args=(),
                 n_calls=100, n_random_starts=10,
                 acq_func="gp_hedge", acq_optimizer="auto", x0=None, y0=None,
                 random_state=None, verbose=False, callback=None,
@@ -220,7 +220,7 @@ def gp_minimize(func, dimensions, base_estimator=None,
 
     return base_minimize(
         func, space, base_estimator=base_estimator,
-        acq_func=acq_func,
+        args=args, acq_func=acq_func,
         xi=xi, kappa=kappa, acq_optimizer=acq_optimizer, n_calls=n_calls,
         n_points=n_points, n_random_starts=n_random_starts,
         n_restarts_optimizer=n_restarts_optimizer,
